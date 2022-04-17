@@ -39,6 +39,31 @@ void endGame() {
 	showObject(sword);
 	hideObject(restart2);
 
+	setTimer(timerl1,0.3f);
+	setTimer(timerl2, 0.3f);
+	setTimer(timerl3, 0.3f);
+	setTimer(timerl4, 0.3f);
+	setTimer(timerl5, 0.3f);
+	setTimer(timerl6, 0.3f);
+
+	setTimer(timerh1, 0.3f);
+	setTimer(timerh2, 0.3f);
+	setTimer(timerh3, 0.3f);
+	setTimer(timerh4, 0.3f);
+	setTimer(timerh5, 0.3f);
+	setTimer(timerh6, 0.3f);
+
+	setTimer(timerr1, 0.3f);
+	setTimer(timerr2, 0.3f);
+	setTimer(timerr3, 0.3f);
+	setTimer(timerr4, 0.3f);
+	setTimer(timerr5, 0.3f);
+	setTimer(timerr6, 0.3f);
+	setTimer(timerr7, 0.3f);
+	setTimer(timerr8, 0.3f);
+	setTimer(timerr9, 1.0f);
+
+	setTimer(rest, 1.0f);
 }
 
 void startGame(){
