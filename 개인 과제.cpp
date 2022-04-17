@@ -1,13 +1,14 @@
 ﻿#include<bangtal.h>
 
-SceneID room1, room2, room3, l1 ,l2 ,l3 ,l4 ,l5 ,l6, h1, h2, h3, h4, h5, h6, r1, r2, r3, r4, r5, r6, r7, r8, r9, finish;
-ObjectID dog, button, start, restart, tree, high, low, string, gage, amount, human, stringhuman, leaf1, leaf2, key, door, restart2;
-TimerID timer1,timer2, timer3, timer4, timerl1, timerl2, timerl3, timerl4, timerl5, timerl6, timerh1, timerh2, timerh3, timerh4, timerh5, timerh6, timerr1, timerr2, timerr3, timerr4, timerr5, timerr6, timerr7, timerr8, timerr9;
+SceneID room1, room2, room3, l1 ,l2 ,l3 ,l4 ,l5 ,l6, h1, h2, h3, h4, h5, h6, r1, r2, r3, r4, r5, r6, r7, r8, r9, finish, finish2;
+ObjectID dog, button, start, restart, tree, high, low, string, gage, amount, human, stringhuman, leaf1, leaf2, key, door, sword, sword2, monster1, monster2, restart2;
+TimerID timer1,timer2, timer3, timer4, timerl1, timerl2, timerl3, timerl4, timerl5, timerl6, timerh1, timerh2, timerh3, timerh4, timerh5, timerh6, timerr1, timerr2, timerr3, timerr4, timerr5, timerr6, timerr7, timerr8, timerr9, rest;
 
 int dogX = 10;
 int power=1;
 int amountY = 420;
 int num=0;
+int num1 = 1;
 
 void endGame() {
 	dogX = 10;
@@ -33,6 +34,10 @@ void endGame() {
 	showObject(leaf1);
 	showObject(leaf2);
 	hideObject(key);
+	num1 = 1;
+	showObject(monster1);
+	showObject(sword);
+	hideObject(restart2);
 
 }
 
@@ -41,7 +46,7 @@ void startGame(){
 	hideObject(start);
 	showObject(button);
 	startTimer(timer1);
-	showMessage("다리를 건너고 건너서 집을 찾아 가세요!!!!");
+	showMessage("다리를 건너고 건너서 괴물을 물리치러 가세요!!!");
 }
 
 void cha() {
@@ -140,7 +145,7 @@ void timerCallback(TimerID timer) {
 		enterScene(l6);
 	}
 	if (timer == timerl6) {
-		showMessage("약해요!");
+		showMessage("약해요....");
 		endGame();
 	}
 
@@ -170,7 +175,7 @@ void timerCallback(TimerID timer) {
 		enterScene(h6);
 	}
 	if (timer == timerh6) {
-		showMessage("강해요!");
+		showMessage("강해요....");
 		endGame();
 	}
 
@@ -218,6 +223,12 @@ void timerCallback(TimerID timer) {
 		enterScene(room3);
 		showMessage("숨겨진 열쇠를 찾으세요!!");
 	}
+
+	if (timer == rest) {
+		enterScene(finish2);
+		showMessage("괴물을 물리치세요.");
+	}
+
 }
 
 void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
@@ -274,7 +285,26 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 	else if (object == door) {
 		if (num == 1) {
 			enterScene(finish);
-			showMessage("도착~");
+			startTimer(rest);
+		}
+	}
+	else if (object == sword) {
+		hideObject(monster1);
+		showObject(monster2);
+		hideObject(sword);
+		showObject(sword2);
+		num1++;
+	}
+	else if (object == sword2) {
+		hideObject(monster2);
+		showObject(monster1);
+		hideObject(sword2);
+		showObject(sword);
+		num1++;
+		if (num1 == 17) {
+			hideObject(monster1);
+			hideObject(sword);
+			showMessage("괴물 을 물리쳤어요!!!!!!!!!!");
 			showObject(restart2);
 		}
 	}
@@ -290,6 +320,7 @@ int main() {
 	room2 = createScene("탈출", "images/background2.png");
 	room3 = createScene("탈출", "images/background3.png");
 	finish = createScene("탈출", "images/finish.png");
+	finish2 = createScene("탈출", "images/finish2.png");
 
 	l1 = createScene(" ", "images/l1.png");
 	l2 = createScene(" ", "images/l2.png");
@@ -336,7 +367,14 @@ int main() {
 	leaf2 = createObject("images/leaf2.png", room3, 830, 0, true);
 	key = createObject("images/key.png", room3, 350, 550, false);
 	door = createObject("images/door.png", room3, 445, 230, true);
-	restart2 = createObject("images/restart.png", finish, 500, 110, false);
+
+	sword = createObject("images/sword.png", finish2, 1050, 30, true);
+	scaleObject(sword, 0.7f);
+	sword2 = createObject("images/sword.png", finish2, 1050, 30, false);
+	scaleObject(sword2, 0.7f);
+	monster1 = createObject("images/monster1.png", finish2, 270, 50, true);
+	monster2 = createObject("images/monster2.png", finish2, 270, 50, false);
+	restart2 = createObject("images/restart.png", finish2, 590, 70, false);
 
 	timer1 = createTimer(2.0f);
 	timer2 = createTimer(2.0f);
@@ -367,6 +405,8 @@ int main() {
 	timerr7 = createTimer(0.3f);
 	timerr8 = createTimer(0.3f);
 	timerr9 = createTimer(1.0f);
+
+	rest = createTimer(1.0f);
 
 	startGame(room1);
 	return 0;
